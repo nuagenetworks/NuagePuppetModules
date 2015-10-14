@@ -43,10 +43,31 @@
 # [*nuage_nova_api_endpoint_type*]
 #  One of publicURL, internalURL, adminURL
 #
+# [*nuage_nova_region_name*]
+#  Based on keystone endpoint-list
+#
 # [*package_ensure*]
 #  To ensure that the nuage-metadata-agent package is available
 
-class nuage::metadataagent {
+class nuage::metadataagent(
+  $metadata_port = '9697',
+  $nova_auth_ip = '127.0.0.1',
+  $nova_metadata_port = '8775',
+  $metadata_secret = 'NuageNetworksSharedSecret',
+  $nova_client_version = '2',
+  $nova_os_username = 'admin',
+  $nova_os_password = 'admin',
+  $nova_os_tenant_name = 'demo',
+  $nova_auth_ip = undef,
+  $metadata_agent_start_with_ovs = 'true',
+  $nova_api_endpoint_type = 'publicURL',
+  $nova_region_name = 'RegionOne',
+  $package_ensure = present,
+) {
+
+  if $::neutron::core_plugin != 'neutron.plugins.nuage.plugin.NuagePlugin' {
+    fail('Nuage plugin should be the core_plugin to use nuage-metadata-agent')
+  }
   
   include ::nuage::params
   
