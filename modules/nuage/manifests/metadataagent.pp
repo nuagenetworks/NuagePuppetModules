@@ -51,7 +51,7 @@
 
 class nuage::metadataagent(
   $metadata_port = '9697',
-  $nova_auth_ip = '127.0.0.1',
+  $nova_metadata_ip = '127.0.0.1',
   $nova_metadata_port = '8775',
   $metadata_secret = 'NuageNetworksSharedSecret',
   $nova_client_version = '2',
