@@ -81,7 +81,7 @@ class nuage::metadataagent(
   } ->
   file { '/etc/default/nuage-metadata-agent':
     content => template('nuage/nuage-metadata-agent.erb'),
-    notify  => Service[$::nuage::params::nuage_openvswitch_switch],
+    notify  => Service[$::nuage::params::nuage_vrs_package],
   }
 
   service { $::nuage::params::nuage_vrs_package:
