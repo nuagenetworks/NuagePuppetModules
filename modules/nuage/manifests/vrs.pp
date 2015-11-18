@@ -21,6 +21,8 @@ class nuage::vrs (
   $package_ensure    = 'present',
 ) {
 
+  include ::nuage::params
+
   package { $nuage::params::nuage_vrs_package:
     ensure => $package_ensure,
     name   => $nuage::params::nuage_vrs_package
