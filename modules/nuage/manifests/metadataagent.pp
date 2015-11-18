@@ -83,8 +83,4 @@ class nuage::metadataagent(
     content => template('nuage/nuage-metadata-agent.erb'),
     notify  => Service[$::nuage::params::nuage_vrs_service],
   }
-
-  service { $::nuage::params::nuage_vrs_service:
-    subscribe => File['/etc/default/nuage-metadata-agent'],
-  }
 }
