@@ -41,8 +41,8 @@ class nuage::vrs (
   if $backup_controller != undef {
     file_line { 'openvswitch backup controller ip address':
       ensure  => present,
-      line    => "BACKUP_CONTROLLER=${backup_controller}",
-      match   => 'BACKUP_CONTROLLER=',
+      line    => "STANDBY_CONTROLLER=${backup_controller}",
+      match   => 'STANDBY_CONTROLLER=',
       path    => '/etc/default/openvswitch',
       notify  => Service[$nuage::params::nuage_vrs_service],
       require => Package[$nuage::params::nuage_vrs_package],
