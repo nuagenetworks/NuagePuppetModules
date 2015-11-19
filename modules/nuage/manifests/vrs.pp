@@ -39,7 +39,7 @@ class nuage::vrs (
   }
 
   if $standby_controller != undef {
-    file_line { 'openvswitch backup controller ip address':
+    file_line { 'openvswitch standby controller ip address':
       ensure  => present,
       line    => "STANDBY_CONTROLLER=${standby_controller}",
       match   => 'STANDBY_CONTROLLER=',
