@@ -38,7 +38,7 @@ class nuage::vrs (
     require => Package[$nuage::params::nuage_vrs_package],
   }
 
-  if $backup_controller != undef {
+  if $standby_controller != undef {
     file_line { 'openvswitch backup controller ip address':
       ensure  => present,
       line    => "STANDBY_CONTROLLER=${standby_controller}",
