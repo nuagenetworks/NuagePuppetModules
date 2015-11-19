@@ -7,8 +7,8 @@
 # [*active_controller*]
 #   (required) IP address of the active VSP controller
 #
-# [*backup_controller*]
-#   (optional) IP address of the backup VSP controller
+# [*standby_controller*]
+#   (optional) IP address of the standby VSP controller
 #
 # [*package_ensure*]
 #  (optional) Ensure that Nuage VRS package is present.
@@ -17,7 +17,7 @@
 
 class nuage::vrs (
   $active_controller,
-  $backup_controller = undef,
+  $standby_controller = undef,
   $package_ensure    = 'present',
 ) {
 
@@ -41,7 +41,7 @@ class nuage::vrs (
   if $backup_controller != undef {
     file_line { 'openvswitch backup controller ip address':
       ensure  => present,
-      line    => "STANDBY_CONTROLLER=${backup_controller}",
+      line    => "STANDBY_CONTROLLER=${standby_controller}",
       match   => 'STANDBY_CONTROLLER=',
       path    => '/etc/default/openvswitch',
       notify  => Service[$nuage::params::nuage_vrs_service],
