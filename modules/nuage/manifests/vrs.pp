@@ -18,6 +18,7 @@
 class nuage::vrs (
   $active_controller,
   $standby_controller = undef,
+  $network_uplink_intf = undef,
   $package_ensure    = 'present',
 ) {
 
@@ -43,6 +44,17 @@ class nuage::vrs (
       ensure  => present,
       line    => "STANDBY_CONTROLLER=${standby_controller}",
       match   => 'STANDBY_CONTROLLER=',
+      path    => '/etc/default/openvswitch',
+      notify  => Service[$nuage::params::nuage_vrs_service],
+      require => Package[$nuage::params::nuage_vrs_package],
+    }
+  }
+
+  if $network_uplink_intf != undef {
+    file_line { 'openvswitch network uplink interface':
+      ensure  => present,
+      line    => "NETWORK_UPLINK_INTF=${network_uplink_intf}",
+      match   => 'NETWORK_UPLINK_INTF=',
       path    => '/etc/default/openvswitch',
       notify  => Service[$nuage::params::nuage_vrs_service],
       require => Package[$nuage::params::nuage_vrs_package],
