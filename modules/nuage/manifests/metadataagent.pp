@@ -65,7 +65,7 @@ class nuage::metadataagent(
   $package_ensure = present,
 ) {
 
-  if $::neutron::core_plugin != 'neutron.plugins.nuage.plugin.NuagePlugin' {
+  if $::neutron::core_plugin != 'nuage_neutron.plugins.nuage.plugin.NuagePlugin' {
     fail('Nuage plugin should be the core_plugin to use nuage-metadata-agent')
   }
   
