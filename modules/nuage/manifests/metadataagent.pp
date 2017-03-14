@@ -65,10 +65,11 @@ class nuage::metadataagent(
   $package_ensure = present,
 ) {
 
-  if $::neutron::core_plugin != 'nuage_neutron.plugins.nuage.plugin.NuagePlugin' {
-    fail('Nuage plugin should be the core_plugin to use nuage-metadata-agent')
+  if $::neutron::core_plugin != 'nuage_neutron.plugins.nuage.plugin.NuagePlugin' and
+    $::neutron::core_plugin != 'nuage' and $::neutron::core_plugin != 'neutron.plugins.ml2.plugin.Ml2Plugin' {
+    fail('Nuage plugin should be the core_plugin or mechanism driver to use nuage-metadata-agent')
   }
-  
+ 
   include ::nuage::params
   
   package { $::nuage::params::python_novaclient:
