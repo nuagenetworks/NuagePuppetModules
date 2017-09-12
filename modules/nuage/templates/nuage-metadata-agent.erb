@@ -20,11 +20,21 @@ NOVA_OS_PASSWORD=<%= scope.lookupvar('nuage::metadataagent::nova_os_password') %
 # NOVA_OS_TENANT_NAME:
 NOVA_OS_TENANT_NAME=<%= scope.lookupvar('nuage::metadataagent::nova_os_tenant_name') %>
 # NOVA_OS_AUTH_URL:
-NOVA_OS_AUTH_URL=http://<%= scope.lookupvar('nuage::metadataagent::nova_auth_ip') %>:5000/v2.0
+NOVA_OS_AUTH_URL=http://<%= scope.lookupvar('nuage::metadataagent::nova_auth_ip') %>:5000/v<%= scope.lookupvar('nuage::metadataagent::identity_url_version') %>
+# NOVA_REGION_NAME:
+NOVA_REGION_NAME=<%= scope.lookupvar('nuage::metadataagent::nova_region_name') %>
 # NUAGE_METADATA_AGENT_START_WITH_OVS: if nuage-metadata-agent needs to be
 # started with nuage-openvswitch-switch
 NUAGE_METADATA_AGENT_START_WITH_OVS=<%= scope.lookupvar('nuage::metadataagent::metadata_agent_start_with_ovs') %>
 # NOVA_API_ENDPOINT_TYPE: one of publicURL, internalURL, adminURL
 NOVA_API_ENDPOINT_TYPE=<%= scope.lookupvar('nuage::metadataagent::nova_api_endpoint_type') %>
-# NOVA_REGION_NAME:
-NOVA_REGION_NAME=<%= scope.lookupvar('nuage::metadataagent::nova_region_name') %>
+# NOVA_PROJECT_NAME: name of the defaule nova project (for eg. services)
+NOVA_PROJECT_NAME=<%= scope.lookupvar('nuage::metadataagent::nova_project_name') %>
+# NOVA_USER_DOMAIN_NAME: name of the user domain name that nova service uses(pick this from nova.conf)
+NOVA_USER_DOMAIN_NAME=<%= scope.lookupvar('nuage::metadataagent::nova_user_domain_name') %>
+# NOVA_PROJECT_DOMAIN_NAME: name of the user project name that nova service uses(pick this from nova.conf)
+NOVA_PROJECT_DOMAIN_NAME=<%= scope.lookupvar('nuage::metadataagent::nova_project_domain_name') %>
+# IDENTITY_URL_VERSION: url version of keystone identity
+IDENTITY_URL_VERSION=<%= scope.lookupvar('nuage::metadataagent::identity_url_version') %>
+# NOVA_OS_KEYSTONE_USERNAME: Keystone username used by nova
+NOVA_OS_KEYSTONE_USERNAME=<%= scope.lookupvar('nuage::metadataagent::nova_os_keystone_username') %>
