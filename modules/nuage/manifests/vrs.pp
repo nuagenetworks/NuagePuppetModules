@@ -10,6 +10,9 @@
 # [*standby_controller*]
 #   (optional) IP address of the standby VSP controller
 #
+# [*bridge_mtu*]
+#   (optional) non-default MTU configuration
+#
 # [*package_ensure*]
 #  (optional) Ensure that Nuage VRS package is present.
 #  Default is True
@@ -18,6 +21,7 @@
 class nuage::vrs (
   $active_controller,
   $standby_controller = undef,
+  $bridge_mtu = undef,
   $package_ensure    = 'present',
 ) {
 
@@ -27,7 +31,6 @@ class nuage::vrs (
     ensure => $package_ensure,
     name   => $nuage::params::nuage_vrs_package
   }
-
 
   file_line { 'openvswitch active controller ip address':
     ensure  => present,
@@ -43,6 +46,17 @@ class nuage::vrs (
       ensure  => present,
       line    => "STANDBY_CONTROLLER=${standby_controller}",
       match   => 'STANDBY_CONTROLLER=',
+      path    => '/etc/default/openvswitch',
+      notify  => Service[$nuage::params::nuage_vrs_service],
+      require => Package[$nuage::params::nuage_vrs_package],
+    }
+  }
+
+  if $bridge_mtu != undef and $bridge_mtu != '' {
+    file_line { 'non-default MTU configuration':
+      ensure  => present,
+      line    => "BRIDGE_MTU=${bridge_mtu}",
+      match   => 'BRIDGE_MTU=',
       path    => '/etc/default/openvswitch',
       notify  => Service[$nuage::params::nuage_vrs_service],
       require => Package[$nuage::params::nuage_vrs_package],
