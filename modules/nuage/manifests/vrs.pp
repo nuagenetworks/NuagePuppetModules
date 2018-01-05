@@ -35,7 +35,7 @@ class nuage::vrs (
   file_line { 'openvswitch active controller ip address':
     ensure  => present,
     line    => "ACTIVE_CONTROLLER=${active_controller}",
-    match   => 'ACTIVE_CONTROLLER=',
+    match   => '[^_]ACTIVE_CONTROLLER=',
     path    => '/etc/default/openvswitch',
     notify  => Service[$nuage::params::nuage_vrs_service],
     require => Package[$nuage::params::nuage_vrs_package],
@@ -45,7 +45,7 @@ class nuage::vrs (
     file_line { 'openvswitch standby controller ip address':
       ensure  => present,
       line    => "STANDBY_CONTROLLER=${standby_controller}",
-      match   => 'STANDBY_CONTROLLER=',
+      match   => '[^_]STANDBY_CONTROLLER=',
       path    => '/etc/default/openvswitch',
       notify  => Service[$nuage::params::nuage_vrs_service],
       require => Package[$nuage::params::nuage_vrs_package],
