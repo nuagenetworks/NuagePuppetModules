@@ -1,2 +1,2 @@
 # NuagePuppetModules
-Puppet modules used for configuration of different Nuage components
+Puppet modules used for configuration of different Nuage components.
