@@ -15,8 +15,8 @@
 #
 # [*enable_hw_offload*]
 #   (optional) Configure OVS to use
-#   Hardware Offload.
-#   Defaults to False.
+#   Hardware Offload
+#   Defaults to False
 #
 # [*package_ensure*]
 #  (optional) Ensure that Nuage VRS package is present.
@@ -72,7 +72,7 @@ class nuage::vrs (
   if $enable_hw_offload {
     vs_config { 'other_config:hw-offload':
       value  => 'true',
-      notify => Service['openvswitch'],
+      notify => Service[$nuage::params::nuage_vrs_service],
       wait   => true,
     }
   }
