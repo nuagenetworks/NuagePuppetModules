@@ -13,6 +13,11 @@
 # [*bridge_mtu*]
 #   (optional) non-default MTU configuration
 #
+# [*enable_hw_offload*]
+#   (optional) Configure OVS to use
+#   Hardware Offload
+#   Defaults to False
+#
 # [*package_ensure*]
 #  (optional) Ensure that Nuage VRS package is present.
 #  Default is True
@@ -22,6 +27,7 @@ class nuage::vrs (
   $active_controller,
   $standby_controller = undef,
   $bridge_mtu = undef,
+  $enable_hw_offload = false,
   $package_ensure    = 'present',
 ) {
 
@@ -60,6 +66,14 @@ class nuage::vrs (
       path    => '/etc/default/openvswitch',
       notify  => Service[$nuage::params::nuage_vrs_service],
       require => Package[$nuage::params::nuage_vrs_package],
+    }
+  }
+
+  if $enable_hw_offload {
+    vs_config { 'other_config:hw-offload':
+      value  => 'true',
+      notify => Service[$nuage::params::nuage_vrs_service],
+      wait   => true,
     }
   }
 
