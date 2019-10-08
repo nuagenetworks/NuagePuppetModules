@@ -22,6 +22,10 @@
 #  (optional) Ensure that Nuage VRS package is present.
 #  Default is True
 #
+# [*vrs_extra_configs*]
+#   (optional) Extra config params and values for
+#   nuage-openvswitch
+#   Default is undef
 
 class nuage::vrs (
   $active_controller,
@@ -29,6 +33,7 @@ class nuage::vrs (
   $bridge_mtu = undef,
   $enable_hw_offload = false,
   $package_ensure    = 'present',
+  $vrs_extra_configs = undef,
 ) {
 
   include ::nuage::params
@@ -74,6 +79,19 @@ class nuage::vrs (
       value  => 'true',
       notify => Service[$nuage::params::nuage_vrs_service],
       wait   => true,
+    }
+  }
+
+  if $vrs_extra_configs != undef and $vrs_extra_configs != {} {
+    $vrs_extra_configs.each |$key, $value| {
+      file_line { "configuring $key":
+        ensure  => present,
+        line    => "$key=$value",
+        match   => "^$key=",
+        path    => '/etc/default/openvswitch',
+        notify  => Service[$nuage::params::nuage_vrs_service],
+        require => Package[$nuage::params::nuage_vrs_package],
+      }
     }
   }
 
