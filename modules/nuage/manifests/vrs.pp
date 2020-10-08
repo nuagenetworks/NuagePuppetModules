@@ -110,39 +110,13 @@ class nuage::vrs (
     action => 'accept',
   }
 
+  # We are adding "stateless" in the name because puppet will not allow
+  # two Resources sharing same Statement. The other reason is to
+  # show difference in the name for these 2 rules.
   firewall { '118 neutron stateless vxlan networks ipv4':
-    ensure => 'absent',
     chain  => 'INPUT',
     proto  => 'udp',
     dport  => '4789',
     action => 'accept',
-  }
-
-  # Add stateless vxlan rules using shell script because:
-  # - tripleo.neutron_compute_plugin_nuage.firewall_rules does not support this yet
-  # - puppet firewall module only support this from version 2.5.0
-  #   which is not available for OSDP13/16.1
-  file { 'add_vxlan_firewallrules_script':
-    ensure => 'file',
-    content => '#!/bin/bash
-iptables -t raw -L PREROUTING | grep udp | grep -E "dpt:(vxlan|4789)\ NOTRACK"
-if [ $? -ne 0 ]; then
-  iptables -t raw -A PREROUTING -p udp --dport 4789 -j NOTRACK-m comment --comment "118 neutron vxlan networks"
-fi
-iptables -t raw -L OUTPUT | grep udp | grep -E "dpt:(vxlan|4789)\ NOTRACK"
-if [ $? -ne 0 ]; then
-  iptables -t raw -A OUTPUT -p udp --dport 4789 -j NOTRACK -m comment --comment "118 neutron vxlan networks"
-fi
-/sbin/service iptables save
-',
-    path  => '/etc/puppet/modules/nuage/add_vxlan_firewallrules_script.sh',
-    owner => 'root',
-    group => 'root',
-    mode  => '0755',
-    notify => Exec['run_add_vxlan_firewallrules_script'],
-  }
-
-  exec { 'run_add_vxlan_firewallrules_script':
-    command => '/etc/puppet/modules/nuage/add_vxlan_firewallrules_script.sh',
   }
 }
