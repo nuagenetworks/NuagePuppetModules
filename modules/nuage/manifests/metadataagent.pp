@@ -99,4 +99,12 @@ class nuage::metadataagent(
     content => template('nuage/nuage-metadata-agent.erb'),
     notify  => Service[$::nuage::params::nuage_vrs_service],
   }
+
+  firewall { '100 metadata agent ipv4':
+    state  => 'NEW',
+    chain  => 'INPUT',
+    proto  => 'tcp',
+    dport  => $metadata_port,
+    action => 'accept',
+  }
 }

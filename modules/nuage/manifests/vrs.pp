@@ -100,4 +100,23 @@ class nuage::vrs (
     name   => $nuage::params::nuage_vrs_service,
     enable => true,
   }
+
+  firewall { '118 neutron vxlan networks ipv4':
+    ensure => 'absent',
+    state  => 'NEW',
+    chain  => 'INPUT',
+    proto  => 'udp',
+    dport  => '4789',
+    action => 'accept',
+  }
+
+  # We are adding "stateless" in the name because puppet will not allow
+  # two Resources sharing same Statement. The other reason is to
+  # show difference in the name for these 2 rules.
+  firewall { '118 neutron stateless vxlan networks ipv4':
+    chain  => 'INPUT',
+    proto  => 'udp',
+    dport  => '4789',
+    action => 'accept',
+  }
 }
