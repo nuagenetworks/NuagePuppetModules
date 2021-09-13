@@ -8,7 +8,7 @@
 
 class nuage::params {
   if($::osfamily == 'RedHat') {
-    $python_novaclient        = 'python-novaclient'
+    $python_novaclient        = 'python3-novaclient'
     $nuage_metadata_agent     = 'nuage-metadata-agent'
     $nuage_vrs_package = 'nuage-openvswitch'
     $nuage_vrs_service = 'openvswitch'
